@@ -6,7 +6,7 @@
 
 Este proyecto reimagina el proceso de estacionamiento tradicional, eliminando la fricción y la incertidumbre. A través de una interfaz limpia e intuitiva, los usuarios pueden escanear su ticket de entrada, visualizar un mapa interactivo del estacionamiento en tiempo real, seleccionar un espacio disponible y ser guiados hasta él. El objetivo es crear una experiencia fluida, rápida y sin estrés.
 
-## ✨ Características Principales
+##  Características Principales
 
 - **Flujo de Usuario Simplificado:** Un proceso paso a paso que guía al usuario desde el escaneo del QR de entrada hasta la selección de su espacio.
 - **Mapa de Estacionamiento Interactivo:** Visualización en tiempo real del estado de los espacios (disponibles, ocupados, accesibles).
@@ -15,7 +15,7 @@ Este proyecto reimagina el proceso de estacionamiento tradicional, eliminando la
 - **Tema Personalizable:** Selector de tema visual (claro, oscuro o basado en el sistema) para una experiencia de usuario cómoda en cualquier condición de luz.
 - **Diseño Responsivo:** Interfaz adaptable que funciona perfectamente en dispositivos móviles y de escritorio.
 
-## 🚀 Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 - **Frontend:** React, TypeScript
 - **Bundler:** Vite
@@ -23,7 +23,7 @@ Este proyecto reimagina el proceso de estacionamiento tradicional, eliminando la
 - **Gestión de Estado:** Zustand
 - **Enrutamiento:** React Router
 
-## 📂 Estructura del Proyecto
+##  Estructura del Proyecto
 
 El código está organizado de manera modular para facilitar su mantenimiento y escalabilidad:
 
@@ -39,7 +39,7 @@ El código está organizado de manera modular para facilitar su mantenimiento y 
 └── vite.config.ts    # Configuración de Vite
 ```
 
-## 🏁 Cómo Empezar
+##  Cómo Empezar
 
 Sigue estos pasos para ejecutar el proyecto en tu entorno local.
 
