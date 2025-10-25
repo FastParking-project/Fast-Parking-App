@@ -14,7 +14,15 @@ export interface ParkingSpace {
   rotation?: number;
 }
 
-export type ObstacleType = 'pillar' | 'wall' | 'road' | 'marking';
+export type ObstacleType = 
+  'pillar' | 
+  'wall' | 
+  'marking' | 
+  'curb' | 
+  'greenery' |
+  'asphalt-base' |
+  'parking-area-background' |
+  'driving-lane';
 
 export interface Obstacle {
   kind: 'obstacle';
@@ -26,15 +34,23 @@ export interface Obstacle {
   height: number;
   fill?: string;
   stroke?: string;
+  // FIX: Add optional 'strokeWidth' property to support SVG path styling and fix type errors.
+  strokeWidth?: string | number;
+  borderRadius?: number;
+  // FIX: Add optional 'rotation' property to support map transformations and resolve type error.
+  rotation?: number;
 }
 
 export interface Decoration {
     kind: 'decoration';
     id: string;
-    type: 'arrow';
+    type: 'arrow' | 'line';
     d: string; // SVG path data
     fill?: string;
     transform?: string;
+    // FIX: Add optional 'stroke' and 'strokeWidth' properties to support SVG path styling and fix type errors.
+    stroke?: string;
+    strokeWidth?: string | number;
 }
 
 

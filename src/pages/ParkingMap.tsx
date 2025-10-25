@@ -67,7 +67,7 @@ const ParkingMap: React.FC = () => {
         </div>
       </header>
       
-      <main className="flex-1 flex items-center justify-center p-4 overflow-auto">
+      <main className="flex-1 flex items-center justify-center overflow-hidden">
         <ParkingLotMap
           mapElements={mapLayout}
           selectedSpaceId={selectedSpaceId}

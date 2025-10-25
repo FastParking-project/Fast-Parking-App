@@ -21,7 +21,7 @@ const NfcScan: React.FC = () => {
       const navigateTimer = setTimeout(() => {
         // En un caso real, aquí se asociaría el ID de la tarjeta NFC
         // con una nueva sesión de estacionamiento.
-        navigate('/map');
+        navigate('/accessibility');
       }, 1500); // Muestra el mensaje de éxito por 1.5 segundos
 
       return () => clearTimeout(navigateTimer);

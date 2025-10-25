@@ -1,12 +1,31 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Layer, Line, Group, Path, Circle } from 'react-konva';
 import { useSessionStore } from '@/src/store/sessionStore';
 import ParkingLotMap from '@/components/ParkingLotMap';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { MapPinIcon } from '@/components/Icons';
 import { fetchParkingLayout, ENTRANCE_POSITION } from '@/src/api/mockApi';
 import { calculatePath } from '@/src/utils/pathfinding';
 import { MapElement } from '@/types';
+
+const KonvaMapPinIcon: React.FC<{ x: number; y: number; size: number; color: string; }> = ({ x, y, size, color }) => (
+    <Group x={x - size / 2} y={y - size}>
+        <Path 
+            data="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+            fill={color}
+            scale={{ x: size/24, y: size/24 }}
+            shadowColor="black"
+            shadowBlur={5}
+            shadowOpacity={0.5}
+        />
+        <Circle
+            x={size/2}
+            y={size/2.6}
+            radius={size/8}
+            fill="white"
+        />
+    </Group>
+);
 
 const VehicleNavigation: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +43,6 @@ const VehicleNavigation: React.FC = () => {
 
     navigator.geolocation.getCurrentPosition(
       () => {
-        // Permiso concedido, podemos cargar el mapa
         const loadLayout = async () => {
           const layout = await fetchParkingLayout();
           setMapLayout(layout);
@@ -43,16 +61,14 @@ const VehicleNavigation: React.FC = () => {
 
   const path = useMemo(() => {
     if (!selectedSpace || mapLayout.length === 0) return [];
-     // Find the full space object from the layout
     const spaceElement = mapLayout.find(el => el.id === selectedSpace.id);
     if (spaceElement && spaceElement.kind === 'space') {
-      // FIX: Pass mapLayout to calculatePath for obstacle detection.
       return calculatePath(ENTRANCE_POSITION, spaceElement, mapLayout);
     }
     return [];
   }, [selectedSpace, mapLayout]);
   
-  const pathString = useMemo(() => path.map(p => `${p.x},${p.y}`).join(' '), [path]);
+  const pathPoints = useMemo(() => path.flatMap(p => [p.x, p.y]), [path]);
 
   if (isLoading) {
      return (
@@ -71,45 +87,30 @@ const VehicleNavigation: React.FC = () => {
         </h1>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center p-4 relative">
+      <main className="flex-1 flex flex-col items-center justify-center relative">
         {permissionError ? (
-          <div className="text-center text-fp-red p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+          <div className="text-center text-fp-red p-4 bg-red-50 dark:bg-red-900/20 rounded-lg max-w-md mx-auto">
             <p className="font-bold">{permissionError}</p>
           </div>
         ) : (
-          <div className="relative w-full max-w-lg max-h-lg">
-            <ParkingLotMap
-              mapElements={mapLayout}
-              selectedSpaceId={selectedSpace?.id || null}
-              onSelectSpace={() => {}}
-            >
-              <svg
-              viewBox="0 0 600 600"
-              className="absolute top-0 left-0 w-full h-full pointer-events-none"
-              aria-hidden="true"
-            >
-              {path.length > 0 && (
-                <>
-                  <polyline
-                    points={pathString}
-                    fill="none"
-                    stroke="var(--color-fp-yellow)"
-                    strokeWidth="4"
-                    strokeDasharray="8 8"
-                    strokeLinecap="round"
-                  >
-                     <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1s" repeatCount="indefinite" />
-                  </polyline>
-                  
-                  <g transform={`translate(${ENTRANCE_POSITION.x - 15}, ${ENTRANCE_POSITION.y - 30})`}>
-                     <MapPinIcon className="w-[30px] h-[30px] text-fp-blue" fill="var(--color-fp-blue)" />
-                      <circle cx="15" cy="12" r="4" fill="white"/>
-                  </g>
-                </>
-              )}
-            </svg>
-            </ParkingLotMap>
-          </div>
+          <ParkingLotMap
+            mapElements={mapLayout}
+            selectedSpaceId={selectedSpace?.id || null}
+            onSelectSpace={() => {}}
+          >
+            {path.length > 0 && (
+              <Layer>
+                <Line
+                    points={pathPoints}
+                    stroke="#FFCC00" // fp-yellow
+                    strokeWidth={4}
+                    dash={[8, 8]}
+                    lineCap="round"
+                />
+                <KonvaMapPinIcon x={ENTRANCE_POSITION.x} y={ENTRANCE_POSITION.y} size={36} color="#03679E" />
+              </Layer>
+            )}
+          </ParkingLotMap>
         )}
       </main>
 
