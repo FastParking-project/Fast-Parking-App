@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = 'light' | 'dark';
 
 interface ThemeState {
   theme: Theme;
@@ -10,12 +10,22 @@ interface ThemeState {
 // Cargar el tema desde localStorage para persistencia
 const getInitialTheme = (): Theme => {
   if (typeof window !== 'undefined') {
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    if (storedTheme && ['light', 'dark', 'system'].includes(storedTheme)) {
+    const storedTheme = localStorage.getItem('theme');
+    
+    // Si hay un tema válido guardado, lo usamos
+    if (storedTheme === 'light' || storedTheme === 'dark') {
       return storedTheme;
     }
+    
+    // Si no hay tema guardado o es el antiguo valor 'system', 
+    // detectamos la preferencia del sistema una vez.
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
   }
-  return 'system';
+  
+  // Por defecto, usamos el tema claro
+  return 'light';
 };
 
 

@@ -15,7 +15,7 @@ const Welcome: React.FC = () => {
       </header>
       
       <p className="text-lg text-gray-600 dark:text-gray-400 -mt-8 mb-12">
-        Tu experiencia de estacionamiento inteligente comienza aquí.
+        El Futuro de tu estacionamiento.
       </p>
 
       <main className="w-full max-w-xs">

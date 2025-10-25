@@ -1,42 +1,34 @@
 import React from 'react';
 import { useThemeStore } from '@/src/store/themeStore';
-import { SunIcon, MoonIcon, SystemIcon } from './Icons';
 
 const ThemeSwitcher: React.FC = () => {
   const { theme, setTheme } = useThemeStore();
+  const isDark = theme === 'dark';
 
-  const iconClasses = (current: 'light' | 'dark' | 'system') => `
-    w-7 h-7 p-1 rounded-md transition-colors duration-200 ease-in-out
-    ${theme === current
-      ? 'bg-fp-blue text-white'
-      : 'text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
-    }
-  `;
+  const toggleTheme = () => {
+    setTheme(isDark ? 'light' : 'dark');
+  };
 
   return (
-    <div className="flex items-center space-x-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
-      <button
-        onClick={() => setTheme('light')}
-        aria-label="Activar modo claro"
-        title="Modo Claro"
-      >
-        <SunIcon className={iconClasses('light')} />
-      </button>
-      <button
-        onClick={() => setTheme('dark')}
-        aria-label="Activar modo oscuro"
-        title="Modo Oscuro"
-      >
-        <MoonIcon className={iconClasses('dark')} />
-      </button>
-      <button
-        onClick={() => setTheme('system')}
-        aria-label="Usar preferencia del sistema"
-        title="Sistema"
-      >
-        <SystemIcon className={iconClasses('system')} />
-      </button>
-    </div>
+    <label
+      htmlFor="theme-toggle"
+      className="relative inline-flex items-center w-14 h-7 cursor-pointer"
+      title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+    >
+      <input
+        id="theme-toggle"
+        type="checkbox"
+        checked={isDark}
+        onChange={toggleTheme}
+        className="peer sr-only"
+        aria-label="Selector de tema"
+      />
+      {/* Background */}
+      <div className="w-full h-full rounded-full bg-fp-blue peer-checked:bg-gray-700 transition-colors duration-300 ease-in-out"></div>
+      
+      {/* Thumb */}
+      <div className="absolute top-[2px] left-[2px] w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out peer-checked:translate-x-7"></div>
+    </label>
   );
 };
 

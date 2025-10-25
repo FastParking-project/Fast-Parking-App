@@ -7,29 +7,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const root = window.document.documentElement;
-
-    const applyTheme = () => {
-      const isDark =
-        theme === 'dark' ||
-        (theme === 'system' &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches);
-      root.classList.toggle('dark', isDark);
-    };
-
-    applyTheme();
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    const handleChange = () => {
-      // Usamos getState para asegurarnos de tener el valor más reciente del store
-      // dentro del closure del listener de eventos.
-      if (useThemeStore.getState().theme === 'system') {
-        applyTheme();
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    root.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
   return (
