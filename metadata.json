@@ -1,6 +1,8 @@
-
 {
   "name": "FastParking",
   "description": "A web application for a smart parking system that digitizes the user experience from entry to exit.",
-  "requestFramePermissions": [ "camera" ]
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
 }

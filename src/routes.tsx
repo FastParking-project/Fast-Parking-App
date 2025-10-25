@@ -14,6 +14,7 @@ import VehicleNavigation from '@/src/pages/VehicleNavigation';
 import ExitNavigation from '@/src/pages/ExitNavigation';
 import SessionSummary from '@/src/pages/SessionSummary';
 import ErrorPage from '@/src/pages/ErrorPage';
+import NfcScan from './pages/NfcScan';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   { path: "/save-session", element: <SessionSaver /> },
+  { path: "/nfc-scan", element: <NfcScan /> },
   { path: "/accessibility", element: <AccessibilityPrompt /> },
   { path: "/map", element: <ParkingMap /> },
   { path: "/confirm-space", element: <SpaceConfirmation /> },

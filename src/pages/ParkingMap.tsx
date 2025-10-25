@@ -1,31 +1,60 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ParkingLotMap from '@/components/ParkingLotMap';
-import { parkingSpaces } from '@/src/data/parkingData';
-import { ParkingSpace } from '@/types';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { ParkingSpace, MapElement } from '@/types';
 import { useSessionStore } from '@/src/store/sessionStore';
+import { fetchParkingLayout } from '@/src/api/mockApi';
 
 const ParkingMap: React.FC = () => {
   const navigate = useNavigate();
   const [selectedSpaceId, setSelectedSpaceId] = useState<string | null>(null);
   const setSelectedSpace = useSessionStore((state) => state.setSelectedSpace);
+  const startSession = useSessionStore((state) => state.startSession);
+
+  const [mapLayout, setMapLayout] = useState<MapElement[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadLayout = async () => {
+      setIsLoading(true);
+      const layout = await fetchParkingLayout();
+      setMapLayout(layout);
+      setIsLoading(false);
+    };
+    loadLayout();
+  }, []);
 
   const handleSelectSpace = (space: ParkingSpace) => {
     if (space.status !== 'occupied') {
-      setSelectedSpaceId(space.id);
+      setSelectedSpaceId(space.id === selectedSpaceId ? null : space.id);
     }
   };
 
   const selectedSpace = useMemo(() => {
-    return parkingSpaces.find(space => space.id === selectedSpaceId);
-  }, [selectedSpaceId]);
+    const element = mapLayout.find(el => el.id === selectedSpaceId);
+    if (element && element.kind === 'space') {
+      return element;
+    }
+    return undefined;
+  }, [selectedSpaceId, mapLayout]);
 
   const handleConfirm = () => {
     if (selectedSpace) {
       setSelectedSpace(selectedSpace);
-      navigate('/confirm-space');
+      startSession();
+      navigate('/navigate');
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-800">
+        <LoadingSpinner />
+        <p className="mt-4 text-gray-800 dark:text-gray-100">Cargando mapa del estacionamiento...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
@@ -34,13 +63,13 @@ const ParkingMap: React.FC = () => {
           <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-gray-100">
             Selecciona tu espacio
           </h1>
-          <p className="text-center text-gray-500 dark:text-gray-400">Piso 1</p>
+          <p className="text-center text-gray-500 dark:text-gray-400">Sótano 1</p>
         </div>
       </header>
       
       <main className="flex-1 flex items-center justify-center p-4 overflow-auto">
         <ParkingLotMap
-          spaces={parkingSpaces}
+          mapElements={mapLayout}
           selectedSpaceId={selectedSpaceId}
           onSelectSpace={handleSelectSpace}
         />

@@ -168,3 +168,53 @@ export const CheckCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) 
     <polyline points="22 4 12 14.01 9 11.01" />
   </svg>
 );
+
+export const NfcIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    {...commonProps}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M4 12.5c2.5-2.5 6.5-2.5 9 0" />
+    <path d="M6 10.5c1.5-1.5 4.5-1.5 6 0" />
+    <path d="M8 8.5c.5-.5 2-.5 2.5 0" />
+    <rect x="2" y="4" width="20" height="16" rx="2" />
+  </svg>
+);
+
+// FIX: Added DollarSignIcon to resolve missing export error.
+export const DollarSignIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    {...commonProps}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <line x1="12" y1="1" x2="12" y2="23" />
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+  </svg>
+);
+
+// FIX: Added MapPinIcon to resolve missing export error.
+export const MapPinIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    {...commonProps}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    {...props}
+  >
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+  </svg>
+);
